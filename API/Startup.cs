@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,11 +32,12 @@ namespace API
             //services.AddControllers();
 
             services.AddControllers().AddNewtonsoftJson(options =>
-                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             );
 
             // untuk menambahkan DbContext Baru
             services.AddDbContext<MyContext>(options => options.UseSqlServer(Configuration.GetConnectionString("APIContext")));
+            //services.AddDbContext<MyContext>(options => options.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("APIContext")));
 
             services.AddScoped<EmployeeRepository>();
             services.AddScoped<AccountRepository>();
