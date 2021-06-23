@@ -27,13 +27,25 @@ namespace API.Controllers
         public ActionResult Register(RegisterVM registerVM)
         {
             var register = repository.RegisterRepo(registerVM);
-            if (register > 0)
+            if (register == 1)
             {
-                return Ok(new { status = HttpStatusCode.OK, result = register, message = "Succes" });
+                return Ok(new { status = HttpStatusCode.OK, result = register, message = "succes" });
+            }
+            else if (register == 2)
+            {
+                return BadRequest(new { status = HttpStatusCode.BadRequest, result = register, message = "nik sudah ada" });
+            }
+            else if (register == 3)
+            {
+                return BadRequest(new { status = HttpStatusCode.BadRequest, result = register, message = "email sudah ada" });
+            }
+            else if (register == 4)
+            {
+                return BadRequest(new { status = HttpStatusCode.BadRequest, result = register, message = "nik dan email sudah ada" });
             }
             else
             {
-                return Ok(new { status = HttpStatusCode.OK, result = register, message = "NIK atau Email Sudah Ada" });
+                return BadRequest(new { status = HttpStatusCode.BadRequest, result = register, message = "Gagal menyimpan, data harus diisi semua" });
             }
         }
     }
