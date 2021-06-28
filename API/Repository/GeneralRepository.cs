@@ -52,7 +52,7 @@ namespace API.Repository
         {
             var employees = entities.Find(key);
             entities.Attach(employees);
-            entities.Update(employees);
+            entities.Update(entity);
             var update = context.SaveChanges();
             return update;
         }

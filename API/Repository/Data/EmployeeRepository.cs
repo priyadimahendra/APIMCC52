@@ -1,6 +1,7 @@
 ﻿using API.Context;
 using API.Model;
 using API.ViewModel;
+using API.Repository.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -34,11 +35,14 @@ namespace API.Repository.Data
                     employee.PhoneNumber = registerVM.PhoneNumber;
                     employee.BirthDate = registerVM.BirthDate;
 
-
+                    var hashPassword = Bcrypt.HashPassword(registerVM.Password); //bcryp password
                     Account account = new Account();
                     account.NIK = registerVM.NIK;
-                    account.Password = registerVM.Password;
+                    account.Password = hashPassword;
 
+                    AccountRole accountRole = new AccountRole();
+                    accountRole.RoleId = "01";
+                    accountRole.NIK = registerVM.NIK;
 
                     Education education = new Education();
                     education.Id = registerVM.EducationId;
@@ -47,10 +51,12 @@ namespace API.Repository.Data
                     education.UniversityId = registerVM.UniversityId;
 
 
-                    //Profiling profiling = new Profiling();
-                    //profiling.NIK = registerVM.NIK;
-                    //profiling.EducationId = registerVM.EducationId;
-                    //context.Profilings.Add(profiling);
+                    Profiling profiling = new Profiling();
+                    profiling.NIK = registerVM.NIK;
+                    profiling.EducationId = registerVM.EducationId;
+
+                    context.AccountRoles.Add(accountRole);
+                    context.Profilings.Add(profiling);
                     context.Employees.Add(employee);
                     context.Accounts.Add(account);
                     context.Educations.Add(education);
@@ -76,6 +82,67 @@ namespace API.Repository.Data
                 return 0; // data ada yang kurang
             }
             
+        }
+
+        public IQueryable ShowProfile()
+        {
+            var result = (from employee in context.Employees
+                         join account in context.Accounts on employee.NIK equals account.NIK
+                         join accountRole in context.AccountRoles on account.NIK equals accountRole.NIK
+                         join role in context.Roles on accountRole.RoleId equals role.Id
+                         join profiling in context.Profilings on account.NIK equals profiling.NIK
+                         join education in context.Educations on profiling.EducationId equals education.Id
+                         join university in context.Universities on education.UniversityId equals university.Id
+                         select new
+                         {
+                             employee.NIK,
+                             role.RoleName,
+                             employee.FirstName,
+                             employee.LastName,
+                             employee.Email,
+                             employee.Salary,
+                             employee.PhoneNumber,
+                             employee.BirthDate,
+                             education.Degree,
+                             education.GPA,
+                             university.Name
+                         });
+            return result;
+        }
+
+        public IQueryable ShowProfile(string nik)
+        {
+            var checkEmployee = context.Employees.Find(nik);
+            if (checkEmployee != null)
+            {
+                var result = (from employee in context.Employees
+                              join account in context.Accounts on employee.NIK equals account.NIK
+                              join accountRole in context.AccountRoles on account.NIK equals accountRole.NIK
+                              join role in context.Roles on accountRole.RoleId equals role.Id
+                              join profiling in context.Profilings on account.NIK equals profiling.NIK
+                              join education in context.Educations on profiling.EducationId equals education.Id
+                              join university in context.Universities on education.UniversityId equals university.Id
+                              where employee.NIK == nik
+                              select new
+                              {
+                                  employee.NIK,
+                                  role.RoleName,
+                                  employee.FirstName,
+                                  employee.LastName,
+                                  employee.Email,
+                                  employee.Salary,
+                                  employee.PhoneNumber,
+                                  employee.BirthDate,
+                                  education.Degree,
+                                  education.GPA,
+                                  university.Name
+                              });
+                return result;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

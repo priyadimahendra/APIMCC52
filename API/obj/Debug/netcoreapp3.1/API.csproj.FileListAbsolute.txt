@@ -66,3 +66,5 @@ C:\Users\papahjahat\Documents\Project C#\API\API\bin\Debug\netcoreapp3.1\Microso
 C:\Users\papahjahat\Documents\Project C#\API\API\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\Users\papahjahat\Documents\Project C#\API\API\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
 C:\Users\papahjahat\Documents\Project C#\API\API\obj\Debug\netcoreapp3.1\API.csproj.AssemblyReference.cache
+C:\Users\papahjahat\Documents\Project C#\API\API\bin\Debug\netcoreapp3.1\BCrypt.Net-Next.dll
+C:\Users\papahjahat\Documents\Project C#\API\API\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll

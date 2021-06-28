@@ -25,37 +25,68 @@ namespace API.Controllers
         [HttpPost("Login")]
         public ActionResult Login(LoginVM loginVM)
         {
-            var login = repository.LoginNIK(loginVM);
-            if (login == 1)
+            var login = repository.Login(loginVM);
+            if (login == "1")
             {
-                return Ok(new { status = HttpStatusCode.OK, result = login, message = "Login Sukses" });
+                return Ok(new { status = HttpStatusCode.BadRequest, result = login, message = "nik / email tidak sesuai dengan data didatabase" });
             }
-            else if (login == 0) 
+            else if (login == "0") 
             {
-                return Ok(new { status = HttpStatusCode.OK, result = login, message = "Password Salah" });
+                return Ok(new { status = HttpStatusCode.BadRequest, result = login, message = "Password Salah" });
             }
-            else
+            else if (login == "2")
             {
-                return Ok(new { status = HttpStatusCode.OK, result = login, message = "nik tidak sesuai dengan data didatabase" });
+                return Ok(new { status = HttpStatusCode.BadRequest, result = login, message = "Masukan Password" });
+            }
+            else 
+            {
+                return Ok(new { status = HttpStatusCode.OK, message = "Login Sukses", token = login });
             }
         }
 
-        [HttpPost("Login/{email}")]
-        public ActionResult Login(LoginVM loginVM, string email)
+        [HttpPost("ResetPassword")]
+        public ActionResult ResetPassword(ForgotPasswordRequestVM forgotPasswordRequestVM)
         {
-            var login = repository.LoginEmail(loginVM, email);
-            if (login == 1)
+            var reset = repository.ResetPassword(forgotPasswordRequestVM);
+            return Ok(reset);
+        }
+
+        [HttpPut("ChangePassword")]
+        public ActionResult ChangePassword(ForgotPasswordRequestVM forgotPasswordRequestVM)
+        {
+            var result = repository.ChangePassword(forgotPasswordRequestVM);
+            if (result == 0)
             {
-                return Ok(new { status = HttpStatusCode.OK, result = login, message = "Login Sukses" });
+                return Ok(new { status = HttpStatusCode.OK, result = result, message = "Sukses" });
             }
-            else if (login == 0)
+            else if (result == 1)
             {
-                return Ok(new { status = HttpStatusCode.OK, result = login, message = "Password Salah" });
+                return Ok(new { status = HttpStatusCode.BadRequest, result = result, message = "Wajib Masukan NIK atau Email" });
+            }
+            else if (result == 2)
+            {
+                return Ok(new { status = HttpStatusCode.BadRequest, result = result, message = "Old Password dan New Password tidak ada" });
+            }
+            else if (result ==3)
+            {
+                return Ok(new { status = HttpStatusCode.BadRequest, result = result, message = "Old Password tidak ada" });
+            }
+            else if (result == 4)
+            {
+                return Ok(new { status = HttpStatusCode.BadRequest, result = result, message = "New Password tidak ada" });
             }
             else
             {
-                return Ok(new { status = HttpStatusCode.OK, result = login, message = "Email tidak sesuai dengan data didatabase" });
+                return Ok(new { status = HttpStatusCode.BadRequest, result = result, message = "Password yang lama tidak cocok" });
             }
+        }
+
+        //test kirim ke Email
+        [HttpPost("TestSendEmail")]
+        public ActionResult TestSendEmail(ForgotPasswordRequestVM forgotPasswordRequestVM)
+        {
+            var acak = repository.SendEmailForgotPassword(forgotPasswordRequestVM);
+            return Ok(acak);
         }
     }
 }

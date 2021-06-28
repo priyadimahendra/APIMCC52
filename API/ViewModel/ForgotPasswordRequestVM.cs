@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace API.ViewModel
 {
-    public class LoginVM
+    public class ForgotPasswordRequestVM
     {
-        public string NIK { get; set; }
         public string Email { get; set; }
-
-        public string Password { get; set; }
+        public string NIK { get; set; }
+        public string OldPassword { get; set; }
+        public string NewPassword { get; set; }
     }
 }

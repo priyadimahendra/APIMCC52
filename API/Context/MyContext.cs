@@ -16,6 +16,8 @@ namespace API.Context
 
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Account> Accounts { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<AccountRole> AccountRoles { get; set; }
         public DbSet<Profiling> Profilings { get; set; }
         public DbSet<Education> Educations { get; set; }
         public DbSet<University> Universities { get; set; }
@@ -39,11 +41,22 @@ namespace API.Context
             modelBuilder.Entity<Education>()
                .HasOne(edc => edc.University)
                .WithMany(u => u.Educations);
+
+            modelBuilder.Entity<AccountRole>()
+                .HasKey(bc => new { bc.NIK, bc.RoleId });
+            modelBuilder.Entity<AccountRole>()
+                .HasOne(bc => bc.Account)
+                .WithMany(b => b.AccountRoles)
+                .HasForeignKey(bc => bc.NIK);
+            modelBuilder.Entity<AccountRole>()
+                .HasOne(bc => bc.Role)
+                .WithMany(c => c.AccountRoles)
+                .HasForeignKey(bc => bc.RoleId);
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseLazyLoadingProxies();
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseLazyLoadingProxies();
+        //}
     }
 }

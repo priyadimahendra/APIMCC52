@@ -11,12 +11,12 @@ using System.Threading.Tasks;
 
 namespace API.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class UniversityController : BaseController<University, UniversityRepository, string>
+    public class RoleController : BaseController<Role, RoleRepository, string>
     {
-        public UniversityController(UniversityRepository repository) : base(repository)
+        public RoleController(RoleRepository repository) : base(repository)
         {
         }
     }

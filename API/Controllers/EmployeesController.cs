@@ -2,6 +2,7 @@
 using API.Model;
 using API.Repository.Data;
 using API.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -46,6 +47,35 @@ namespace API.Controllers
             else
             {
                 return BadRequest(new { status = HttpStatusCode.BadRequest, result = register, message = "Gagal menyimpan, data harus diisi semua" });
+            }
+        }
+
+        [Authorize(Roles = "Employee")]
+        [HttpGet("ShowProfile")]
+        public ActionResult ShowProfile()
+        {
+            var result = repository.ShowProfile();
+            if (result == null)
+            {
+                return Ok(new { status = HttpStatusCode.BadRequest, result = result, message = "Data tidak Ada" });
+            }
+            else
+            {
+                return Ok(new { status = HttpStatusCode.OK, result = result});
+            }
+        }
+
+        [HttpGet("ShowProfile/{nik}")]
+        public ActionResult ShowProfile(string nik)
+        {
+            var result = repository.ShowProfile(nik);
+            if (result == null)
+            {
+                return Ok(new { status = HttpStatusCode.BadRequest, result = result, message = "Data tidak Ada" });
+            }
+            else
+            {
+                return Ok(new { status = HttpStatusCode.OK, result = result});
             }
         }
     }
