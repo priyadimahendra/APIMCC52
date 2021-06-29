@@ -34,16 +34,26 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddControllers();
+            // Ini untuk CORS AllowAllOrigins
+            //services.AddCors(c =>
+            //{
+            //    c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+            //});
 
+            //services.AddControllers();
+            //=============================================================================
+
+            // untuk menambahkan Controller menggunakan Json
             services.AddControllers().AddNewtonsoftJson(options =>
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             );
 
             // untuk menambahkan DbContext Baru
             //services.AddDbContext<MyContext>(options => options.UseSqlServer(Configuration.GetConnectionString("APIContext")));
+            // ini adalah menambahkan DbContext dengan LazyLoadingProxies
             services.AddDbContext<MyContext>(options => options.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("APIContext")));
 
+            // ini untuk JWT atau untuk Token dan Authorize
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => 
             {
                 options.RequireHttpsMetadata = false;
@@ -66,11 +76,19 @@ namespace API
             services.AddScoped<EducationRepository>();
             services.AddScoped<ProfilingRepository>();
             services.AddScoped<UniversityRepository>();
+
+            //Ini syntax untuk menambahkan CORS WithOrigins dan harus paling bawah gini
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => options.WithOrigins("https://localhost:44383"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            //app.UseCors(options => options.AllowAnyOrigin()); // ini ditambahin bila ingin menggunakan CORS AllowAllOrigins
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -78,11 +96,13 @@ namespace API
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication(); // ini ditambahin bila ingin menggunakan Autentifikasi di controller
+
             app.UseRouting();
 
-            app.UseAuthentication();
-
             app.UseAuthorization();
+
+            app.UseCors("AllowOrigin"); // ini harus ditaruh sebelum end Point dan ini berfungsi untuk CORS withOrigins
 
             app.UseEndpoints(endpoints =>
             {

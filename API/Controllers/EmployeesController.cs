@@ -2,7 +2,7 @@
 using API.Model;
 using API.Repository.Data;
 using API.ViewModel;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace API.Controllers
 {
+    [EnableCors("AllowOrigin")]
     [Route("api/[controller]")]
     [ApiController]
     public class EmployeesController : BaseController<Employee, EmployeeRepository, string>
@@ -50,7 +51,7 @@ namespace API.Controllers
             }
         }
 
-        [Authorize(Roles = "Employee")]
+        //[Authorize(Roles = "Employee")]
         [HttpGet("ShowProfile")]
         public ActionResult ShowProfile()
         {
