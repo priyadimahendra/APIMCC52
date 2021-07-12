@@ -26,7 +26,8 @@ namespace API.Base
         [HttpGet]//tambahan buat bedain getnya
         public ActionResult Get()
         {
-            return Ok(repository.Get());// jadiin objeck status code, result, pesan.
+            var get = repository.Get();
+            return Ok(get);// jadiin objeck status code, result, pesan.
         }
 
         [HttpGet("{key}")]//tambahan buat bedain getnya
@@ -35,11 +36,11 @@ namespace API.Base
             var get = repository.Get(key);
             if (get == null)
             {
-                return Ok(new { status = HttpStatusCode.OK, result = get, message = "Tidak Ditemukan" });
+                return Ok(get);
             }
             else
             {
-                return Ok(new { status = HttpStatusCode.OK, result = get, message = "Data Ada" });
+                return Ok(get);
             }
         }
         //tambah trycatch

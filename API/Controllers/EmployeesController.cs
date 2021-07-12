@@ -58,11 +58,11 @@ namespace API.Controllers
             var result = repository.ShowProfile();
             if (result == null)
             {
-                return Ok(new { status = HttpStatusCode.BadRequest, result = result, message = "Data tidak Ada" });
+                return Ok(result);
             }
             else
             {
-                return Ok(new { status = HttpStatusCode.OK, result = result});
+                return Ok(result);
             }
         }
 

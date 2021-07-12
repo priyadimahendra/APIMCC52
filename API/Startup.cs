@@ -63,9 +63,8 @@ namespace API
                     ValidateAudience = true,
                     ValidateIssuer = true,
                     ValidAudience = "Test",
-                    ValidIssuer = "API",
+                    ValidIssuer = Configuration["Jwt:Issuer"],
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("sdfsdfsjdbf78sdyfssdfsdfbuidfs98gdfsdbf"))
-
                 };
             });
 
@@ -80,7 +79,8 @@ namespace API
             //Ini syntax untuk menambahkan CORS WithOrigins dan harus paling bawah gini
             services.AddCors(c =>
             {
-                c.AddPolicy("AllowOrigin", options => options.WithOrigins("https://localhost:44383"));
+                //wajib tuh ditambahin .AllowAnyHeader().AllowAnyMethod().AllowCredentials() biar bisa dipakai semua header, method, dan credentialsnya
+                c.AddPolicy("AllowOrigin", options => options.WithOrigins("https://localhost:44383").AllowAnyHeader().AllowAnyMethod().AllowCredentials());
             });
         }
 

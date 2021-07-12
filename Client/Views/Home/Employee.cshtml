@@ -1,0 +1,118 @@
+﻿@{
+    ViewData["Title"] = "Home Employee";
+    Layout = "_LayoutEmployeeHome";
+}
+
+<button type="button" class="btn btn-primary mt-5 registrasi" data-toggle="modal" data-target=".bd-example-modal-lg">REGISTRASI</button>
+
+<div class="table-responsive mt-3" >
+    <table id="myTable" class="display nowrap">
+        <thead class="table-dark">
+            <tr>
+                <th>NIK</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Salary</th>
+                <th>Phone Number</th>
+                <th>Birth Date</th>
+                <th>Degree</th>
+                <th>GPA</th>
+                <th>University Name</th>
+                <th>Role Name</th>
+                <th >Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-capitalize focus">REGISTRASI</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-content container">
+                <form>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="inputEmail4">NIK</label>
+                            <input type="text" id="nik" class="form-control" placeholder="NIK" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputPassword4">Education Id</label>
+                            <input type="text" id="educationId" class="form-control" placeholder="Education Id" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputPassword4">University Id</label>
+                            <select id="universityId" class="form-control">
+                                <option selected value="">Choose...</option>
+                                <option value="01">Udinus</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="inputEmail4">First Name</label>
+                            <input type="text" id="firstName" class="form-control" placeholder="First Name" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputPassword4">Last Name</label>
+                            <input type="text" id="lastName" class="form-control" placeholder="Last Name" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputPassword4">Birth Date</label>
+                            <input type="date" id="birthDate" class="form-control" required >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputAddress">Email</label>
+                        <input type="email" id="email" class="form-control" placeholder="Email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputAddress">Password</label>
+                        <input type="password" id="password" class="form-control" placeholder="Password" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputAddress">Salary</label>
+                        <input type="number" id="salary" class="form-control" placeholder="Salary" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputAddress">Phone Number</label>
+                        <input type="text" id="phoneNumber" class="form-control" placeholder="Phone Number" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputEmail4">Degree</label>
+                            <input type="text" id="degree" class="form-control" placeholder="Degree" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputPassword4">GPA</label>
+                            <input type="text" id="gpa" class="form-control" placeholder="GPA" required>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary" onclick="Validation()">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/homeEmployee.js" type="text/javascript"></script>
+}

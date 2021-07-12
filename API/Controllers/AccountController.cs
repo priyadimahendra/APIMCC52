@@ -22,25 +22,26 @@ namespace API.Controllers
             this.repository = repository;
         }
 
+        
         [HttpPost("Login")]
         public ActionResult Login(LoginVM loginVM)
         {
             var login = repository.Login(loginVM);
             if (login == "1")
             {
-                return Ok(new { status = HttpStatusCode.BadRequest, result = login, message = "nik / email tidak sesuai dengan data didatabase" });
+                return Ok(new JWTokenVM { Status = HttpStatusCode.BadRequest, Token = login, Message = "nik / email tidak sesuai dengan data didatabase" });
             }
             else if (login == "0") 
             {
-                return Ok(new { status = HttpStatusCode.BadRequest, result = login, message = "Password Salah" });
+                return Ok(new JWTokenVM { Status = HttpStatusCode.BadRequest, Token = login, Message = "Password Salah" });
             }
             else if (login == "2")
             {
-                return Ok(new { status = HttpStatusCode.BadRequest, result = login, message = "Masukan Password" });
+                return Ok(new JWTokenVM { Status = HttpStatusCode.BadRequest, Token = login, Message = "Masukan Password" });
             }
             else 
             {
-                return Ok(new { status = HttpStatusCode.OK, message = "Login Sukses", token = login });
+                return Ok(new JWTokenVM { Status = HttpStatusCode.OK, Message = "Login Sukses", Token = login });
             }
         }
 
